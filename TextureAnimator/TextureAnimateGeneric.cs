@@ -1,4 +1,6 @@
-﻿using System;
+﻿//Tecture animator by Lo-Fi CC-BY-SA
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,17 +11,29 @@ namespace TextureAnimator
 
     public class TextureAnimateGeneric : PartModule
     {
-        Transform _mesh;
-
+        //config fields
         [KSPField]
         public string ObjectName;
         [KSPField]
-        int speedU = 15;
+        public int minSpeedU = 5;
         [KSPField]
-        int speedV = 30;
+        public int maxSpeedU = 15; //default valuesm, over-ridden in config
+        [KSPField]
+        public int minSpeedV = 0; //default valuesm, over-ridden in config
+        [KSPField]
+        public int maxSpeedV = 30;
         [KSPField]
         public float smoothSpeed = 10;
+        [KSPField]
+        public float minOffsetU = -.1f; 
+        [KSPField]
+        public float maxOffsetU = .1f;
+        [KSPField]
+        public float minOffsetV = -.1f;
+        [KSPField]
+        public float maxOffsetV = .1f;
 
+        //internal global variables
         int timeU;
         int timeV;
 
@@ -29,18 +43,11 @@ namespace TextureAnimator
         float smoothedU;
         float smoothedV;
 
-        [KSPField]
-        float minOffsetU = -.1f; //default valuesm, over-ridden in config
-        [KSPField]
-        float maxOffsetU = .1f;
-
-        [KSPField]
-        float minOffsetV = -.1f;
-        [KSPField]
-        float maxOffsetV = .1f;
-
-        [KSPField]
+        //public global variables
         public bool isReady = false;
+
+        //objects
+        Transform _mesh;
 
         public override void OnStart(PartModule.StartState state)
         {
@@ -61,13 +68,13 @@ namespace TextureAnimator
 
             if (timeU <= 0)
             {
-                timeU = UnityEngine.Random.Range(0, speedU);    //generate a random value up to configured speed
+                timeU = UnityEngine.Random.Range(minSpeedU, maxSpeedU);    //generate a random value up to configured speed
                 offsetU = UnityEngine.Random.Range(minOffsetU, maxOffsetU); //generate a random value between configured values
             }
 
             if (timeV <= 0)
             {
-                timeV = UnityEngine.Random.Range(0, speedV);
+                timeV = UnityEngine.Random.Range(minSpeedV, maxSpeedV);
                 offsetV = UnityEngine.Random.Range(minOffsetV, maxOffsetV);
             }
 
