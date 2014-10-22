@@ -32,7 +32,9 @@ namespace TextureAnimator
         public float minOffsetV = -.1f;
         [KSPField]
         public float maxOffsetV = .1f;
-
+        [KSPField]
+        public bool additiveMode = false;
+         
         //internal global variables
         int timeU;
         int timeV;
@@ -58,6 +60,7 @@ namespace TextureAnimator
 
             if (HighLogic.LoadedSceneIsFlight)
                 isReady = true;
+            print("starting texture animator");
 
         }
 
@@ -87,7 +90,10 @@ namespace TextureAnimator
 
             Material material = _mesh.renderer.material;    //set things up for changing the texture offset on the track
             Vector2 textureOffset = material.mainTextureOffset;
-            textureOffset = new Vector2(smoothedU, smoothedV); //Set the values for current texture offset
+            if(additiveMode)
+                textureOffset = textureOffset + new Vector2(smoothedU, smoothedV); //Set the values for current texture offset
+            else
+                textureOffset = new Vector2(smoothedU, smoothedV); //Set the values for current texture offset
             material.SetTextureOffset("_MainTex", textureOffset);   //change main tex offset
             material.SetTextureOffset("_BumpMap", textureOffset);   //change bump map offset
         }
