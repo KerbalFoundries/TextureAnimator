@@ -55,11 +55,18 @@ namespace TextureAnimator
         {
             base.OnStart(state);
             //print(Version.versionNumber);
-
-            _mesh = transform.Search(ObjectName);
-
+            
             if (HighLogic.LoadedSceneIsFlight)
                 isReady = true;
+
+            try
+            {
+                _mesh = transform.Search(ObjectName);
+            }
+            catch
+            {
+                isReady = false;
+            }
             print("starting texture animator");
 
         }
